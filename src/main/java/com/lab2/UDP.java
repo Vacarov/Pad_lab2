@@ -1,60 +1,60 @@
 package com.lab2;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.*;
 import java.util.ArrayList;
 
 public class UDP {
     private int mcPort = 12345;
     private String mcIP = "230.1.1.1";
 
-    public ArrayList<Node> receiveInfoAboutRunningNodes() throws IOException {
+    public ArrayList<Node> receiveInfoAboutRunningNodes()  {
+        MulticastSocket mcSocket = null;
+        InetAddress mcIPAddress = null;
         ArrayList<Node> nodes = new ArrayList<>();
-        MulticastSocket mcSocket = new MulticastSocket(this.mcPort);
-        InetAddress mcIPAddress = InetAddress.getByName(this.mcIP);
-
-        System.out.println("Multicast Receiver running at:" + mcSocket.getLocalSocketAddress());
-        mcSocket.joinGroup(mcIPAddress);
-        System.out.println("Waiting for a  multicast info about existent nodes...");
-
-        DatagramPacket receivePacket;
-        mcSocket.setSoTimeout(5000);
-
         try {
-            while (mcSocket.getSoTimeout() > 0) {
-                System.out.println("Wating for datagram to be received...");
+            mcSocket = new MulticastSocket(this.mcPort);
+            mcIPAddress = InetAddress.getByName(this.mcIP);
 
-                //Create buffer
-                byte[] buffer = new byte[1024];
-                mcSocket.receive(new DatagramPacket(buffer, 1024));
-                System.out.println("Datagram received!");
+            mcSocket.joinGroup(mcIPAddress);
+            System.out.println("Nodes please talk me about you");
+            mcSocket.setSoTimeout(7000);
 
-                //Deserialze object
-                ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
-                ObjectInputStream ois = new ObjectInputStream(bais);
+            while (true) {
                 try {
+                    //Create buffer
+                    byte[] buffer = new byte[1024];
+                    mcSocket.receive(new DatagramPacket(buffer, 1024));
+
+                    //Deserialze object
+                    ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
+                    ObjectInputStream ois = new ObjectInputStream(bais);
+
                     Object readObject = ois.readObject();
                     if (readObject instanceof Node) {
                         Node node = (Node) readObject;
+                        nodes.add(node);
                         System.out.println("Received node info: " + node.toString());
                     } else {
                         System.out.println("The received object is not of type String!");
                     }
+                }catch (SocketTimeoutException e) {
+                    break;
                 } catch (Exception e) {
                     System.out.println("No object could be read from the received UDP datagram.");
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
-            mcSocket.leaveGroup(mcIPAddress);
+            try {
+                mcSocket.leaveGroup(mcIPAddress);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             mcSocket.close();
         }
 
-        System.out.println(nodes);
         return nodes;
     }
 
@@ -65,20 +65,15 @@ public class UDP {
         oos.flush();
         // get the byte array of the object
         byte[] buf= baos.toByteArray();
-
-
         DatagramSocket udpSocket = new DatagramSocket();
-        InetAddress mcIPAddress = InetAddress.getByName(this.mcIP);
-
-//        byte[] msg = node.toString().getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
+
+        InetAddress mcIPAddress = InetAddress.getByName(this.mcIP);
         packet.setAddress(mcIPAddress);
         packet.setPort(this.mcPort);
         udpSocket.send(packet);
 
-        System.out.println("Sent a  multicast message.");
-        System.out.println("Exiting application");
+        System.out.println("Sent a  multicast message from node with ip address and port:" + node.getLocation());
         udpSocket.close();
     }
-
 }

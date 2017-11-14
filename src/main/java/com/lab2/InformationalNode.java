@@ -9,27 +9,29 @@ import java.util.List;
 
 public class InformationalNode extends Thread {
 
+    private File dataFile;
+    private File configFile;
     private Node node;
-    private File file;
 
-    public InformationalNode(Node node, String fileName) {
-        this.node = node;
+    public InformationalNode(String dataFile, String configFile, Node node) {
         String filePath = "/home/vvacarov/IdeaProjects/pad_lab2/";
-        this.file = new File(filePath + fileName);
+        this.dataFile = new File(filePath + dataFile);
+        this.configFile = new File(filePath + configFile);
+        this.node = node;
     }
 
     @Override
     public void run() {
-        try{
-        UDP udp = new UDP();
-        udp.sendInfo(this.node);
-//        System.out.println(this.getEmployees().toString());
-        }
-        catch (Exception e){
+        try {
+            ArrayList<Node> nodes = XMLParser.getNodeList(this.configFile);
+            this.node.setLinksNumber(nodes.size());
+
+            UDP udp = new UDP();
+            udp.sendInfo(this.node);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-//        new TcpServer().start();
-
     }
 
     public ArrayList<Employee> getEmployees() {
@@ -37,7 +39,7 @@ public class InformationalNode extends Thread {
         ArrayList<Employee> employees = new ArrayList<>();
         try {
             employees = mapper.readValue(
-                    new File(String.valueOf(this.file)),
+                    new File(String.valueOf(this.dataFile)),
                     new TypeReference<List<Employee>>() {
                     });
         } catch (Exception e) {
