@@ -1,4 +1,6 @@
-package com.lab2;
+package com.lab2.util;
+
+import com.lab2.node.Node;
 
 import java.io.*;
 import java.net.*;

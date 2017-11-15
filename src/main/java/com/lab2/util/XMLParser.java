@@ -1,5 +1,6 @@
-package com.lab2;
+package com.lab2.util;
 
+import com.lab2.node.InformationalNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,9 +49,9 @@ public class XMLParser {
         return;
     }
 
-    public static ArrayList<com.lab2.Node> getNodeList(File xmlFile) {
+    public static ArrayList<com.lab2.node.Node> getNodeList(File xmlFile) {
 
-        ArrayList<com.lab2.Node> nodes = new ArrayList<>();
+        ArrayList<com.lab2.node.Node> nodes = new ArrayList<>();
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -67,7 +68,7 @@ public class XMLParser {
                     Element eElement = (Element) nNode;
                     String ip = eElement.getElementsByTagName("ip").item(0).getTextContent();
                     int port = Integer.parseInt(eElement.getElementsByTagName("port").item(0).getTextContent());
-                    nodes.add(new com.lab2.Node(new InetSocketAddress(ip, port)));
+                    nodes.add(new com.lab2.node.Node(new InetSocketAddress(ip, port)));
                 }
             }
         } catch (Exception e) {

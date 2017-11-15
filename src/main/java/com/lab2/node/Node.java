@@ -1,4 +1,4 @@
-package com.lab2;
+package com.lab2.node;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;

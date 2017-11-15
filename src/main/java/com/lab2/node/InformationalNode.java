@@ -1,7 +1,9 @@
-package com.lab2;
+package com.lab2.node;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab2.util.UDP;
+import com.lab2.util.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;

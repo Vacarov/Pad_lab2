@@ -1,7 +1,9 @@
-package com.lab2;
+package com.lab2.node;
+
+import com.lab2.node.InformationalNode;
+import com.lab2.node.Node;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 
 public class NodeApp {
     public static void main(String[] args) throws InterruptedException {
