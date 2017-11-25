@@ -1,7 +1,5 @@
 package com.lab2.mediator;
 
-import com.lab2.mediator.ProxyServer;
-
 import java.io.IOException;
 
 public class Main {

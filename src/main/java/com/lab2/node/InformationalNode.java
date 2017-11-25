@@ -2,10 +2,12 @@ package com.lab2.node;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lab2.util.UDP;
+import com.lab2.protocols.TCPServer;
+import com.lab2.protocols.UDP;
 import com.lab2.util.XMLParser;
 
 import java.io.File;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +28,24 @@ public class InformationalNode extends Thread {
     public void run() {
         try {
             ArrayList<Node> nodes = XMLParser.getNodeList(this.configFile);
-            this.node.setLinksNumber(nodes.size());
+            ArrayList<InetSocketAddress> addresses = new ArrayList<>();
+
+            for (Node nod : nodes) {
+                if (nod.getLocation().equals(this.node.getLocation())) {
+                } else {
+                    addresses.add(nod.getLocation());
+                }
+            }
+
+            this.node.setLinksAdresses(addresses);
+            this.node.setLinksNumber(addresses.size());
+            this.node.setEmployees(this.getEmployees());
 
             UDP udp = new UDP();
             udp.sendInfo(this.node);
+
+            new Thread(() -> new TCPServer(this.node).start()).start();
+            Thread.sleep(200);
 
         } catch (Exception e) {
             e.printStackTrace();

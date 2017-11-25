@@ -1,4 +1,4 @@
-package com.lab2.util;
+package com.lab2.protocols;
 
 import com.lab2.node.Node;
 
@@ -10,7 +10,7 @@ public class UDP {
     private int mcPort = 12345;
     private String mcIP = "230.1.1.1";
 
-    public ArrayList<Node> receiveInfoAboutRunningNodes()  {
+    public ArrayList<Node> receiveInfoAboutRunningNodes() {
         MulticastSocket mcSocket = null;
         InetAddress mcIPAddress = null;
         ArrayList<Node> nodes = new ArrayList<>();
@@ -20,7 +20,7 @@ public class UDP {
 
             mcSocket.joinGroup(mcIPAddress);
             System.out.println("Nodes please talk me about you");
-            mcSocket.setSoTimeout(7000);
+            mcSocket.setSoTimeout(5000);
 
             while (true) {
                 try {
@@ -40,7 +40,7 @@ public class UDP {
                     } else {
                         System.out.println("The received object is not of type String!");
                     }
-                }catch (SocketTimeoutException e) {
+                } catch (SocketTimeoutException e) {
                     break;
                 } catch (Exception e) {
                     System.out.println("No object could be read from the received UDP datagram.");
@@ -66,7 +66,7 @@ public class UDP {
         oos.writeObject(node);
         oos.flush();
         // get the byte array of the object
-        byte[] buf= baos.toByteArray();
+        byte[] buf = baos.toByteArray();
         DatagramSocket udpSocket = new DatagramSocket();
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
 

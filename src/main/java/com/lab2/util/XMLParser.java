@@ -1,53 +1,17 @@
 package com.lab2.util;
 
-import com.lab2.node.InformationalNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class XMLParser {
-
-    public static void getInformationalNodeConfig(File xmlFile) {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        InformationalNode informationalNode = null;
-
-        try {
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
-            doc.getDocumentElement().normalize();
-            NodeList nList = doc.getElementsByTagName("node");
-
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-
-                org.w3c.dom.Node nNode = nList.item(temp);
-
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                    Element eElement = (Element) nNode;
-                    int id = Integer.parseInt(eElement.getAttribute("id"));
-                    String ip = eElement.getElementsByTagName("ip").item(0).getTextContent();
-                    int port = Integer.parseInt(eElement.getElementsByTagName("tcpPort").item(0).getTextContent());
-                }
-            }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return;
-    }
 
     public static ArrayList<com.lab2.node.Node> getNodeList(File xmlFile) {
 
@@ -71,9 +35,11 @@ public class XMLParser {
                     nodes.add(new com.lab2.node.Node(new InetSocketAddress(ip, port)));
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return nodes;
     }
 }

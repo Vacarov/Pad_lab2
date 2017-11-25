@@ -1,21 +1,21 @@
 package com.lab2.mediator;
 
-import com.lab2.util.TCPServer;
-import com.lab2.util.UDP;
+import com.lab2.protocols.TCPServer;
+import com.lab2.protocols.UDP;
 import com.lab2.node.Node;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class ProxyServer {
-    public void start() throws IOException {
+public class ProxyServer extends Thread {
+    public void start() {
         UDP udp = new UDP();
         ArrayList<Node> nodes = udp.receiveInfoAboutRunningNodes();
 
         Node bestNode = selectBestNode(nodes);
+        System.out.println("This is the best node " + bestNode);
 
         TCPServer tcpServer = new TCPServer(5555);
-        tcpServer.acceptClients();
+        tcpServer.acceptClients(bestNode);
     }
 
     private Node selectBestNode(ArrayList<Node> nodes) {
@@ -25,7 +25,7 @@ public class ProxyServer {
             links.add(node.getLinksNumber());
         }
 
-        int maxLinks = getNumberMaxLinks(links);
+        int maxLinks = getMaximalNumberOfLinks(links);
 
         Node bestNode = null;
         for (int j = 0; j < nodes.size(); j++) {
@@ -37,7 +37,7 @@ public class ProxyServer {
         return bestNode;
     }
 
-    private int getNumberMaxLinks(ArrayList<Integer> links) {
+    private int getMaximalNumberOfLinks(ArrayList<Integer> links) {
         int maxLinks = 0;
         for (int i = 0; i < links.size(); i++) {
             if (maxLinks < links.get(i)) {

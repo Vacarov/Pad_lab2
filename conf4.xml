@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
 <nodes>
-    <node id="1">
+    <node>
         <ip>127.0.0.1</ip>
         <port>7001</port>
     </node>
-    <node id="4">
+    <node>
         <ip>127.0.0.1</ip>
         <port>7004</port>
     </node>
-    <node id="5">
+    <node>
         <ip>127.0.0.1</ip>
         <port>7005</port>
     </node>

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class Node implements Serializable {
     private static final long serialVersionUID = 1L;
     private InetSocketAddress location;
-    private static ArrayList<Node> nodesLinks = new ArrayList<>();
     private int linksNumber;
-
+    private ArrayList<Employee> employees;
+    private ArrayList<InetSocketAddress> linksAdresses;
 
     public Node() {
     }
@@ -43,12 +43,20 @@ public class Node implements Serializable {
         this.linksNumber = linksNumber;
     }
 
-    public static ArrayList<Node> getNodesLinks() {
-        return nodesLinks;
+    public ArrayList<Employee> getEmployees() {
+        return employees;
     }
 
-    public static void setNodesLinks(ArrayList<Node> nodesLinks) {
-        Node.nodesLinks = nodesLinks;
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public ArrayList<InetSocketAddress> getLinksAdresses() {
+        return linksAdresses;
+    }
+
+    public void setLinksAdresses(ArrayList<InetSocketAddress> linksAdresses) {
+        this.linksAdresses = linksAdresses;
     }
 
     @Override

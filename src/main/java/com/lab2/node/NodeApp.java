@@ -1,8 +1,5 @@
 package com.lab2.node;
 
-import com.lab2.node.InformationalNode;
-import com.lab2.node.Node;
-
 import java.net.InetSocketAddress;
 
 public class NodeApp {
