@@ -4,6 +4,8 @@ import com.lab2.protocols.TCPServer;
 import com.lab2.protocols.UDP;
 import com.lab2.node.Node;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ProxyServer extends Thread {

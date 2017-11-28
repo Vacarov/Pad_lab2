@@ -1,6 +1,7 @@
 package com.lab2.protocols;
 
 import com.google.gson.Gson;
+import com.lab2.common.Message;
 import com.lab2.mediator.ClientConnection;
 import com.lab2.node.Node;
 
@@ -54,18 +55,16 @@ public class TCPServer {
                 registeredNodes.add(this.node.getLocation());
                 for (InetSocketAddress socketAddress : this.node.getLinksAdresses()) {
                     if (!registeredNodes.contains(socketAddress)) {
-
                         TCPCommunication tcpCommunication = new TCPCommunication();
                         tcpCommunication.startConnection(socketAddress.getHostName(), socketAddress.getPort());
                     }
                 }
 
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
                 Gson gson = new Gson();
                 final String json = gson.toJson(this.node.getEmployees());
                 System.out.println(json);
-                out.println(json);
+                out.println("hello");
 
             }
         } catch (Exception e) {

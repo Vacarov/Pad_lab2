@@ -30,14 +30,7 @@ public class TCPCommunication {
     public void sendMessage(Message message) throws IOException {
         Gson gson = new Gson();
         final String json = gson.toJson(message);
-//        System.out.println(json);
         out.println(json);
     }
 
-//    public void sendMessageAsString(String message) throws IOException {
-//        Gson gson = new Gson();
-//        final String json = gson.toJson(message);
-//        System.out.println(json);
-//        out.println(json);
-//    }
 }
