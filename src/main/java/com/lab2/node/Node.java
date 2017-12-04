@@ -11,6 +11,7 @@ public class Node implements Serializable {
     private ArrayList<Employee> employees;
     private ArrayList<InetSocketAddress> linksAdresses;
 
+
     public Node() {
     }
 

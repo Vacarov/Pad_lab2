@@ -1,8 +1,9 @@
 package com.lab2.protocols;
 
-import com.google.gson.Gson;
 import com.lab2.common.Message;
 import com.lab2.mediator.ClientConnection;
+import com.lab2.node.Command;
+import com.lab2.node.Employee;
 import com.lab2.node.Node;
 
 import java.io.PrintWriter;
@@ -11,10 +12,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class TCPServer {
+public class TCPServer extends Thread {
     private ServerSocket serverSocket;
     private Node node;
-    private static ArrayList<InetSocketAddress> registeredNodes = new ArrayList<>();
 
     public TCPServer(int port) {
         try {
@@ -46,26 +46,51 @@ public class TCPServer {
     }
 
     public void start() {
+        ArrayList<InetSocketAddress> registeredNodes = new ArrayList<>();
+//         ArrayList<Node> registeredNodes = new ArrayList<>();
+//         ArrayList<Node> nodes =new ArrayList<>();
+
         try {
             while (true) {
-//                ArrayList<ArrayList<Employee>> employees = new ArrayList<>();
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("You are connected to " + serverSocket.getLocalPort());
 
+                TCPCommunication clientTcpCommunication = new TCPCommunication();
+                Message clientRequest = clientTcpCommunication.receiveMessage(clientSocket);
+                System.out.println(clientRequest);
+
+
+//                registeredNodes.add(this.node.getLocation());
+//                for (InetSocketAddress socketAddress : this.node.getLinksAdresses()) {
+//                    if (this.node.getLinksAdresses().contains(node.getLocation())) {
+//                        TCPCommunication tcpCommunication = new TCPCommunication();
+//                        tcpCommunication.startConnection(node.getLocation().getHostName(), node.getLocation().getPort());
+//                        System.out.println(node.getEmployees());
+//                    }
+//                }
                 registeredNodes.add(this.node.getLocation());
                 for (InetSocketAddress socketAddress : this.node.getLinksAdresses()) {
                     if (!registeredNodes.contains(socketAddress)) {
                         TCPCommunication tcpCommunication = new TCPCommunication();
                         tcpCommunication.startConnection(socketAddress.getHostName(), socketAddress.getPort());
+
+                        System.out.println(this.node.getEmployees());
                     }
                 }
 
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                Gson gson = new Gson();
-                final String json = gson.toJson(this.node.getEmployees());
-                System.out.println(json);
-                out.println("hello");
+                Command response = new Command();
 
+                ArrayList<Employee> employees = this.node.getEmployees();
+
+                String message = null;
+                if (clientRequest.getCommand().equals("GET_ALL")) {
+                    message = response.getAll(employees);
+                } else if (clientRequest.getCommand().equals("SORT")) {
+                    message = response.getSortedEmployees(employees, clientRequest);
+                }
+
+                out.println(message);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

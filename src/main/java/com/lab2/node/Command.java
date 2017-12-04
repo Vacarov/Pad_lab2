@@ -6,7 +6,7 @@ import com.lab2.common.Message;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Response {
+public class Command {
     private  Gson gson = new Gson();
 
     public String getAll(ArrayList<Employee> employees){

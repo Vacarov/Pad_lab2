@@ -20,21 +20,21 @@ public class ClientConnection extends Thread {
     public synchronized void start() {
         try {
             TCPCommunication clientTcpCommunication = new TCPCommunication();
-            Message clientRequest = clientTcpCommunication.receiveMessage(clientSocket);
-            Socket clSocket = new Socket(this.node.getLocation().getAddress(), this.node.getLocation().getPort());
+            String clientRequest = clientTcpCommunication.receiveMessageInJson(clientSocket);
             System.out.println("Client Request is : " + clientRequest);
 
-            System.out.println("This client is on port: " + clSocket.getLocalPort());
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            System.out.println(clientRequest);
-            out.println(clientRequest);
+            Socket nodeSocket = new Socket(this.node.getLocation().getAddress(), this.node.getLocation().getPort());
+            PrintWriter outNode = new PrintWriter(nodeSocket.getOutputStream(), true);
+            outNode.println(clientRequest);
 
-//            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//            String input;
-//
-//            while ((input = in.readLine()) != null) {
-//                System.out.println(input);
-//            }
+            BufferedReader inNode = new BufferedReader(new InputStreamReader(nodeSocket.getInputStream()));
+            PrintWriter outClient = new PrintWriter(this.clientSocket.getOutputStream(), true);
+
+            String input = inNode.readLine();
+            outClient.println(input);
+
+            System.out.println(input);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

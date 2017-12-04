@@ -19,7 +19,7 @@ public class UDP {
             mcIPAddress = InetAddress.getByName(this.mcIP);
 
             mcSocket.joinGroup(mcIPAddress);
-            System.out.println("Nodes please talk me about you");
+            System.out.println("Nodes please tell me about you");
             mcSocket.setSoTimeout(5000);
 
             while (true) {

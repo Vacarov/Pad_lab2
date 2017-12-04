@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InformationalNode extends Thread {
+public class InformationalNode {
 
     private File dataFile;
     private File configFile;
@@ -24,7 +24,6 @@ public class InformationalNode extends Thread {
         this.node = node;
     }
 
-    @Override
     public void run() {
         try {
             ArrayList<Node> nodes = XMLParser.getNodeList(this.configFile);
