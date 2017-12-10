@@ -1,7 +1,7 @@
 package com.lab2.client;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.lab2.util.ValidationUtils;
+import com.lab2.util.JsonValidator;
 import com.lab2.common.*;
 import com.lab2.protocols.TCPCommunication;
 
@@ -44,7 +44,7 @@ public class Client {
                         EOrder eOrder = getChosenOrder();
                         EFormatType eFormatType = getChosenFormatType();
 
-                        Message message2 = new Message(ECommand.SORT, fieldName, eOrder, null);
+                        Message message2 = new Message(ECommand.SORT, fieldName, eOrder, eFormatType);
                         tcpCommunication.sendMessage(message2);
                         String sortedResponse = tcpCommunication.receiveResponse();
 
@@ -106,16 +106,16 @@ public class Client {
     }
 
     private static boolean validateJsonSchema(String response) throws IOException, ProcessingException {
-        String path = "/home/vvacarov/IdeaProjects/pad_lab2/src/main/java/com/lab2/client/";
+        String path = "/home/vvacarov/IdeaProjects/pad_lab2/src/main/java/com/lab2/util/";
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path + "data.json"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path + "data/data.json"));
         writer.write(response);
         writer.close();
 
-        File schemaFile = new File(path + "employees_schema.json");
-        File dataFile = new File(path + "data.json");
+        File schemaFile = new File(path + "schema/schema.json");
+        File dataFile = new File(path + "data/data.json");
 
-        if (ValidationUtils.isJsonValid(schemaFile, dataFile)) {
+        if (JsonValidator.isJsonValid(schemaFile, dataFile)) {
             System.out.println("Schema is Valid!");
             return true;
         } else {

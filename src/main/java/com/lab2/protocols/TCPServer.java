@@ -74,6 +74,8 @@ public class TCPServer extends Thread {
                 } else if (clientRequest.getCommand().equals(ECommand.SORT)) {
                     message = response.getSortedEmployees(employees, clientRequest);
                 }
+
+                System.out.println(message);
                 out.println(message);
             }
         } catch (Exception e) {
