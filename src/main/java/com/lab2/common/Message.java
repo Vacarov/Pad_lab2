@@ -4,79 +4,69 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
     private static final long serialVersionUID = 1L;
-    private String command;
-    private String fieldName;
-    private String text;
-    private String order;
+    private ECommand command;
+    private EFieldName fieldName;
+    private EOrder order;
+    private EFormatType formatType;
 
     public Message() {
     }
 
-    public Message(String command) {
+    public Message(ECommand command, EFormatType formatType) {
         this.command = command;
+        this.formatType = formatType;
     }
 
-    public Message(String command, String fieldName) {
+    public Message(ECommand command, EFieldName fieldName, EOrder order, EFormatType formatType) {
         this.command = command;
         this.fieldName = fieldName;
-    }
-
-    public Message(String command, String fieldName, String text) {
-        this.command = command;
-        this.fieldName = fieldName;
-        this.text = text;
-    }
-
-    public Message(String command, String fieldName, String text, String operation) {
-        this.command = command;
-        this.fieldName = fieldName;
-        this.text = text;
-        this.order = operation;
+        this.order = order;
+        this.formatType = formatType;
     }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public String getCommand() {
+    public ECommand getCommand() {
         return command;
     }
 
-    public void setCommand(String command) {
+    public void setCommand(ECommand command) {
         this.command = command;
     }
 
-    public String getFieldName() {
+    public EFieldName getFieldName() {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
+    public void setFieldName(EFieldName fieldName) {
         this.fieldName = fieldName;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getOrder() {
+    public EOrder getOrder() {
         return order;
     }
 
-    public void setOrder(String order) {
+    public void setOrder(EOrder order) {
         this.order = order;
+    }
+
+    public EFormatType getFormatType() {
+        return formatType;
+    }
+
+    public void setFormatType(EFormatType formatType) {
+        this.formatType = formatType;
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "command='" + command + '\'' +
-                ", fieldName='" + fieldName + '\'' +
-                ", text='" + text + '\'' +
-                ", order='" + order + '\'' +
+                "command=" + command +
+                ", fieldName=" + fieldName +
+                ", order=" + order +
+                ", formatType=" + formatType +
                 '}';
     }
 }

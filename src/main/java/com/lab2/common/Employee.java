@@ -1,19 +1,19 @@
-package com.lab2.node;
+package com.lab2.common;
 
 import java.io.Serializable;
 
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String surname;
     private Double salary;
 
     public Employee() {
     }
 
     public Employee(String firstName, String lastName, Double salary) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = firstName;
+        this.surname = lastName;
         this.salary = salary;
     }
 
@@ -21,20 +21,20 @@ public class Employee implements Serializable {
         return serialVersionUID;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public Double getSalary() {
@@ -48,8 +48,8 @@ public class Employee implements Serializable {
     @Override
     public String toString() {
         return "Employee{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", salary=" + salary +
                 '}';
     }

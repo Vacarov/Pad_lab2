@@ -16,12 +16,9 @@ public class TCPCommunication {
         out = new PrintWriter(clientSocket.getOutputStream(), true);
     }
 
-    public void receiveResponse() throws IOException {
+    public String receiveResponse() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String input;
-        while ((input = in.readLine()) != null) {
-            System.out.println(input);
-        }
+        return in.readLine();
     }
 
     public Message receiveMessage(Socket clientSocket) throws IOException {

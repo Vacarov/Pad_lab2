@@ -1,13 +1,13 @@
 package com.lab2.protocols;
 
+import com.lab2.common.ECommand;
 import com.lab2.common.Message;
 import com.lab2.mediator.ClientConnection;
 import com.lab2.node.Command;
-import com.lab2.node.Employee;
+import com.lab2.common.Employee;
 import com.lab2.node.Node;
 
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -45,13 +45,11 @@ public class TCPServer extends Thread {
         }
     }
 
-    public void start() {
-        ArrayList<InetSocketAddress> registeredNodes = new ArrayList<>();
-//         ArrayList<Node> registeredNodes = new ArrayList<>();
-//         ArrayList<Node> nodes =new ArrayList<>();
-
+    public void start(ArrayList<Node> nodes) {
         try {
             while (true) {
+                ArrayList<Employee> employees= new ArrayList<>();
+
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("You are connected to " + serverSocket.getLocalPort());
 
@@ -59,37 +57,23 @@ public class TCPServer extends Thread {
                 Message clientRequest = clientTcpCommunication.receiveMessage(clientSocket);
                 System.out.println(clientRequest);
 
-
-//                registeredNodes.add(this.node.getLocation());
-//                for (InetSocketAddress socketAddress : this.node.getLinksAdresses()) {
-//                    if (this.node.getLinksAdresses().contains(node.getLocation())) {
-//                        TCPCommunication tcpCommunication = new TCPCommunication();
-//                        tcpCommunication.startConnection(node.getLocation().getHostName(), node.getLocation().getPort());
-//                        System.out.println(node.getEmployees());
-//                    }
-//                }
-                registeredNodes.add(this.node.getLocation());
-                for (InetSocketAddress socketAddress : this.node.getLinksAdresses()) {
-                    if (!registeredNodes.contains(socketAddress)) {
+                for (Node node : nodes){
                         TCPCommunication tcpCommunication = new TCPCommunication();
-                        tcpCommunication.startConnection(socketAddress.getHostName(), socketAddress.getPort());
-
-                        System.out.println(this.node.getEmployees());
-                    }
+                        tcpCommunication.startConnection(node.getLocation().getHostName(),node.getLocation().getPort());
+                        employees.addAll(node.getEmployees());
                 }
 
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 Command response = new Command();
 
-                ArrayList<Employee> employees = this.node.getEmployees();
+                employees.addAll(this.node.getEmployees());
 
                 String message = null;
-                if (clientRequest.getCommand().equals("GET_ALL")) {
+                if (clientRequest.getCommand().equals(ECommand.GET_ALL)) {
                     message = response.getAll(employees);
-                } else if (clientRequest.getCommand().equals("SORT")) {
+                } else if (clientRequest.getCommand().equals(ECommand.SORT)) {
                     message = response.getSortedEmployees(employees, clientRequest);
                 }
-
                 out.println(message);
             }
         } catch (Exception e) {

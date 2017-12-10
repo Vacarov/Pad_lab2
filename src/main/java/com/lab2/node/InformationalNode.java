@@ -2,6 +2,7 @@ package com.lab2.node;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab2.common.Employee;
 import com.lab2.protocols.TCPServer;
 import com.lab2.protocols.UDP;
 import com.lab2.util.XMLParser;
@@ -13,14 +14,11 @@ import java.util.List;
 
 public class InformationalNode {
 
-    private File dataFile;
     private File configFile;
     private Node node;
 
-    public InformationalNode(String dataFile, String configFile, Node node) {
-        String filePath = "/home/vvacarov/IdeaProjects/pad_lab2/";
-        this.dataFile = new File(filePath + dataFile);
-        this.configFile = new File(filePath + configFile);
+    public InformationalNode(String configFile, Node node) {
+        this.configFile = new File("/home/vvacarov/IdeaProjects/pad_lab2/" + configFile);
         this.node = node;
     }
 
@@ -29,21 +27,25 @@ public class InformationalNode {
             ArrayList<Node> nodes = XMLParser.getNodeList(this.configFile);
             ArrayList<InetSocketAddress> addresses = new ArrayList<>();
 
+            ArrayList<Node> nods = new ArrayList<>();
             for (Node nod : nodes) {
+                int a = Integer.parseInt(nod.getLocation().toString().substring(nod.getLocation().toString().length() - 1));
                 if (nod.getLocation().equals(this.node.getLocation())) {
+                    this.node.setEmployees(this.getNodeEmployees(a));
                 } else {
                     addresses.add(nod.getLocation());
+                    nod.setEmployees(this.getNodeEmployees(a));
+                    nods.add(nod);
                 }
             }
 
             this.node.setLinksAdresses(addresses);
             this.node.setLinksNumber(addresses.size());
-            this.node.setEmployees(this.getEmployees());
 
             UDP udp = new UDP();
             udp.sendInfo(this.node);
 
-            new Thread(() -> new TCPServer(this.node).start()).start();
+            new Thread(() -> new TCPServer(this.node).start(nods)).start();
             Thread.sleep(200);
 
         } catch (Exception e) {
@@ -51,12 +53,13 @@ public class InformationalNode {
         }
     }
 
-    public ArrayList<Employee> getEmployees() {
+    public ArrayList<Employee> getNodeEmployees(int a) {
+        String dataFile = "/home/vvacarov/IdeaProjects/pad_lab2/employees" + a;
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Employee> employees = new ArrayList<>();
         try {
             employees = mapper.readValue(
-                    new File(String.valueOf(this.dataFile)),
+                    new File(String.valueOf(dataFile)),
                     new TypeReference<List<Employee>>() {
                     });
         } catch (Exception e) {

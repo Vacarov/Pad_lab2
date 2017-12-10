@@ -1,17 +1,17 @@
 [
   {
-    "firstName": "doi",
-    "lastName": "vacarov",
+    "name": "doi",
+    "surname": "vacarov",
     "salary": "111030"
   },
   {
-    "firstName": "deux",
-    "lastName": "gustos",
+    "name": "deux",
+    "surname": "gustos",
     "salary": "1100"
   },
   {
-    "firstName": "two",
-    "lastName": "brdfgod",
+    "name": "two",
+    "surname": "brdfgod",
     "salary": "1150"
   }
 ]

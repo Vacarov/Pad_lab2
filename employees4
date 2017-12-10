@@ -1,17 +1,17 @@
 [
   {
-    "firstName": "patru",
-    "lastName": "bmdf",
+    "name": "patru",
+    "surname": "bmdf",
     "salary": "234"
   },
   {
-    "firstName": "quatre",
-    "lastName": "kjh",
+    "name": "quatre",
+    "surname": "kjh",
     "salary": "444"
   },
   {
-    "firstName": "four",
-    "lastName": "asd",
+    "name": "four",
+    "surname": "asd",
     "salary": "423"
   }
 ]

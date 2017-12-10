@@ -1,5 +1,7 @@
 package com.lab2.node;
 
+import com.lab2.common.Employee;
+
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;

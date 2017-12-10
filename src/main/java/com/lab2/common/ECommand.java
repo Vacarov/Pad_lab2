@@ -3,7 +3,7 @@ package com.lab2.common;
 import java.io.Serializable;
 
 public enum ECommand implements Serializable {
-    GET_ALL("all"), SORT("sort"), FILTER("filter");
+    GET_ALL("all"), SORT("sort");
 
     private String command;
 
@@ -24,8 +24,6 @@ public enum ECommand implements Serializable {
 
     @Override
     public String toString() {
-        return "ECommand{" +
-                "command='" + command + '\'' +
-                '}';
+        return command;
     }
 }

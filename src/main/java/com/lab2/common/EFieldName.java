@@ -3,7 +3,7 @@ package com.lab2.common;
 import java.io.Serializable;
 
 public enum EFieldName implements Serializable {
-    FIRST_NAME("First Name"), LAST_NAME("Last Name"), SALARY("Salary");
+    NAME("name"), SURNAME("surame"), SALARY("salary");
 
     private String fieldName;
 
@@ -24,8 +24,6 @@ public enum EFieldName implements Serializable {
 
     @Override
     public String toString() {
-        return "EFieldName{" +
-                "fieldName='" + fieldName + '\'' +
-                '}';
+        return fieldName;
     }
 }
